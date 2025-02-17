@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body>
+    <form action="/handleForm" method="POST" style="border: 1px solid gray; background: green;">
+        <select name="amount" style="width: 100%;">
+            <option value="" selected>[ile]</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        <select name="kolor" style="width: 100%;">
+            <option value="" selected>[kolor]</option>
+            <option value="red">red</option>
+            <option value="green">green</option>
+            <option value="blue">blue</option>
+        </select>
+        <label for="25px">Small: </label>
+        <input type="radio" name="size" value="25px">
+        <label for="50px">Medium: </label>
+        <input type="radio" name="size" value="50px">
+        <label for="75px">Big: </label>
+        <input type="radio" name="size" value="75px">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
