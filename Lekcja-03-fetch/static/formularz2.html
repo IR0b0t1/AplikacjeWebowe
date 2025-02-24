@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+
+<body>
+    <input type="number" name="a" id="a">
+    <input type="number" name="b" id="b">
+    <select name="type" id="c">
+        <option value="suma">suma</option>
+        <option value="różnica">różnica</option>
+        <option value="iloczyn">iloczyn</option>
+        <option value="iloraz">iloraz</option>
+        <option value="wszystkie">wszystkie działania</option>
+    </select>
+    <div id="div1">klik</div>
+    <script>
+        document.getElementById("div1").onclick = function () {
+            const a = document.querySelector("#a").value
+            const b = document.querySelector("#b").value
+            const c = document.querySelector("#c").value
+
+            const data = JSON.stringify({
+                a: a,
+                b: b,
+                type: c,
+
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            // Fetch
+            fetch("/test", options)
+                .then(response => response.json())
+                .then(dataFromServer => alert(JSON.stringify(dataFromServer, null, 5)))
+                .catch(error => console.log(error));
+        }
+    </script>
+
+</body>
+
+</html>

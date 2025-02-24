@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="range" name="r" min="0" max="255" id="r">
+    <input type="range" name="g" min="0" max="255" id="g">
+    <input type="range" name="b" min="0" max="255" id="b">
+    <input type="range" name="a" min="0" max="100" id="a">
+    <div id="color" style="background: rgba(0,0,0,0); border: 1px solid black; width: 100px;
+    height: 100px;"></div>
+    <script>
+        document.getElementById("r").oninput = function () {
+            const r = document.querySelector("#r").value
+            const g = document.querySelector("#g").value
+            const b = document.querySelector("#b").value
+            const a = document.querySelector("#a").value
+            const div = document.querySelector('#color')
+
+            const data = JSON.stringify({
+                r: r,
+                g: g,
+                b: b,
+                a: a,
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            // Fetch
+            fetch("/test", options)
+                .then(response => response.json())
+                .then(data => (brother.value = data.value))
+                .catch(error => console.log(error));
+        }
+    </script>
+</body>
+
+</html>
