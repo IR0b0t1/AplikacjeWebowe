@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="range" name="main" min="0" max="100" id="main" style="width: 50%;">
+    <input type="range" name="brother" min="0" max="100" id="brother" style="width: 100%;">
+    <script>
+        document.getElementById("main").oninput = function () {
+            const value = document.querySelector("#main").value
+            const brother = document.querySelector("#brother")
+
+            const data = JSON.stringify({
+                value: value,
+
+            })
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            // Fetch
+            fetch("/test", options)
+                .then(response => response.json())
+                .then(data => (brother.value = data.value))
+                .catch(error => console.log(error));
+        }
+    </script>
+</body>
+
+</html>

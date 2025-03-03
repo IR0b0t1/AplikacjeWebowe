@@ -13,31 +13,47 @@ app.get("/", function (req, res) {
 
 app.post('/handleUpload', function (req, res) {
     res.header("content-type", "application/json")
+
     let form = formidable({});
     let formProgress = []
-    const data = {
-        bytesExpected: "",
-        bytesReceived: "",
-        uploadTime: ""
+
+    const response = {
+        responseTab: "",
+        time: ""
     }
+
+    let seconds = 0;
+    let miliseconds = 0;
 
     form.uploadDir = __dirname + '/static/upload/'
 
     form.on("progress", function (bytesReceived, bytesExpected) {
         console.log(form.bytesExpected, form.bytesReceived);
-        data.bytesExpected = form.bytesExpected
-        data.bytesReceived = form.bytesReceived
-        data.uploadTime = `czas bierzący: ${new Date().getSeconds()} sekunda, ${new Date().getMilliseconds()} milisekunda`
+        const data = {
+            bytesExpected: form.bytesExpected,
+            bytesReceived: form.bytesReceived,
+            uploadTime: `czas bierzący: ${new Date().getSeconds()} sekunda, ${new Date().getMilliseconds()} milisekunda`
+        }
         console.log(data)
         formProgress.push(data)
     })
 
+    form.on("fileBegin", function (name, value) {
+        seconds = new Date().getSeconds();
+        miliseconds = new Date().getMilliseconds();
+    })
+
+    form.on("end", function () {
+        seconds = new Date().getSeconds() - seconds;
+        miliseconds = new Date().getMilliseconds() - miliseconds;
+        response.time = (`cały zapis trwał: ${seconds} sekund, ${miliseconds} milisekund`)
+        response.responseTab = formProgress
+    })
+
     form.parse(req, function (err, fields, files) {
-        console.log(form.bytesExpected, form.bytesReceived);
-        data.bytesExpected = form.bytesExpected
-        data.bytesReceived = form.bytesReceived
-        res.send(JSON.stringify(formProgress, null, 5))
+        res.send(JSON.stringify(response, null, 5))
     });
+
 });
 
 // Static

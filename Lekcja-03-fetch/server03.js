@@ -7,14 +7,13 @@ app.use(express.json());
 
 // GET-y
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "/static/formularz3.html"))
+    res.sendFile(path.join(__dirname, "/static/fetch1.html"))
 })
 
 app.post("/test", function (req, res) {
     const data = req.body
-    const rgba = `${data.r}, ${data.g}, ${data.b}, ${data.a}`
-    console.log(rgba)
-    res.send(rgba)
+    console.log(data)
+    res.send(data)
 })
 
 // Static

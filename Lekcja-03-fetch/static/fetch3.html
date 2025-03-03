@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="display: flex; justify-content: center;">
+    <div id="position" style="background: violet; width: 500px; height: 500px; position: relative;"></div>
+    <div id="latency" style="background: gray; width: 500px; height: 500px;"></div>
+    <script>
+        const clickArea = document.getElementById("position")
+        const updateClick = (event) => {
+            if (event.target.tagName === 'DIV' && event.target !== clickArea) {
+                return;
+            }
+
+            const x = event.offsetX;
+            const y = event.offsetY;
+            console.log(`Clicked at: X=${x}, Y=${y}`);
+
+            let ball = document.createElement('div');
+            ball.style.borderRadius = '50%';
+            ball.style.background = 'red';
+            ball.style.position = 'absolute';
+            ball.style.width = '50px';
+            ball.style.height = '50px';
+            ball.style.left = `${x}px`;
+            ball.style.top = `${y}px`;
+            ball.style.transform = 'translate(-50%, -50%)';
+            ball.innerHTML = `${x}, ${y}`
+            ball.style.textAlign = 'center';
+
+            clickArea.appendChild(ball)
+
+            const data = JSON.stringify({ x, y })
+
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: data
+            };
+            // Fetch
+            fetch("/click", options)
+                .then(response => response.json())
+                .then(data => (ball.style.left = data.x, ball.style.top = data.y))
+                .catch(error => console.log(error));
+        }
+
+        clickArea.onclick = updateClick
+    </script>
+</body>
+
+</html>
