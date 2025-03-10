@@ -1,0 +1,7 @@
+{{subject}}
+<form action="/handleForm" method="GET">
+    {{#each fields}}
+    <input type="checkbox" name="show" value="{{name}}">{{name}}</input>
+    {{/each}}
+    <button type="submit">Submit</button>
+</form>
