@@ -31,7 +31,7 @@ app.get('/test', function (req, res) {
 });
 
 // Static
-app.use(express.static('static'))
+// app.use(express.static('static'))
 
 // Listening
 app.listen(PORT, function () {
