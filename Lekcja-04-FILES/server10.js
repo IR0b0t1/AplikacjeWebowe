@@ -1,6 +1,7 @@
 const express = require("express");
 const formidable = require("formidable");
 const path = require("path");
+const fs = require("fs");
 const app = express();
 const PORT = 3000;
 
@@ -15,7 +16,10 @@ app.post("/api", function (req, res) {
     form.uploadDir = path.join(__dirname, "/static/upload");
     form.keepExtensions = true;
 
-    let filePaths = [];
+    form.on("progress", (bytesReceived, bytesExpected) => {
+        const progress = Math.round((bytesReceived / bytesExpected) * 100);
+        console.log(`Progress: ${progress}%`);
+    });
 
     form.parse(req, (err, fields, files) => {
         if (err) {
@@ -24,13 +28,27 @@ app.post("/api", function (req, res) {
         }
 
         const file = files.file;
-        filePaths.push(`/upload/${path.basename(file.path)}`);
+        const filePath = `/upload/${path.basename(file.path)}`;
 
         setTimeout(() => {
-            res.json({
-                message: "File uploaded successfully!",
-                filePath: filePaths[0],
-            });
+            if (filePath.endsWith(".txt")) {
+                fs.readFile(file.path, "utf8", (err, data) => {
+                    if (err) {
+                        res.status(500).json({ error: "Failed to read text file" });
+                    } else {
+                        res.json({
+                            message: "File uploaded successfully!",
+                            filePath,
+                            content: data
+                        });
+                    }
+                });
+            } else {
+                res.json({
+                    message: "File uploaded successfully!",
+                    filePath
+                });
+            }
         }, 1000);
     });
 });
