@@ -8,10 +8,12 @@
 </head>
 
 <body>
-    <label for="fileInput">Obraz:</label>
-    <input type="file" id="fileInput" accept="image/*"><br>
+    <label for="fileInput">Select file (Image or Text):</label>
+    <input type="file" id="fileInput" accept=".txt,image/*"><br>
     <button id="uploadButton">Upload</button>
-    <img id="uploadedImage" src="" alt="Uploaded Image" style="max-width: 100%;"><br>
+
+    <div id="fileContent" style="margin-top: 20px;"></div>
+    <img id="uploadedImage" src="" alt="Uploaded Image" style="max-width: 100%; display:none;">
 
     <script>
         document.getElementById("uploadButton").onclick = function () {
@@ -21,7 +23,7 @@
             if (fileInput.files.length > 0) {
                 fd.append("file", fileInput.files[0]);
 
-                fetch("http://localhost:3000/api", {
+                fetch("/api", {
                     method: "POST",
                     body: fd
                 })
@@ -29,8 +31,13 @@
                     .then(data => {
                         console.log(data);
 
-                        if (data.filePath) {
+                        if (data.type === "image") {
                             document.getElementById("uploadedImage").src = data.filePath;
+                            document.getElementById("uploadedImage").style.display = "block";
+                            document.getElementById("fileContent").innerHTML = "";
+                        } else if (data.type === "text") {
+                            document.getElementById("fileContent").innerText = data.content;
+                            document.getElementById("uploadedImage").style.display = "none";
                         }
                     })
                     .catch(error => {

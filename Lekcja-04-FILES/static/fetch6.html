@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files One by One</title>
+</head>
+
+<body>
+    <label for="fileInput">Select files (multiple images):</label>
+    <input type="file" id="fileInput" accept="image/*" multiple><br>
+    <button id="uploadButton">Upload</button>
+
+    <div id="status" style="margin-top: 10px;">Status: Not started</div>
+
+    <div id="imageContainer" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById("uploadButton").onclick = function () {
+            const fd = new FormData();
+            const fileInput = document.getElementById("fileInput");
+
+            const files = fileInput.files;
+
+            if (files.length > 0) {
+                let currentFileIndex = 0;
+
+                document.getElementById("status").innerText = "Uploading files...";
+
+                function uploadFile() {
+                    if (currentFileIndex >= files.length) {
+                        document.getElementById("status").innerText = "All files uploaded!";
+                        return;
+                    }
+
+                    fd.append("file", files[currentFileIndex]);
+
+                    fetch("/api", {
+                        method: "POST",
+                        body: fd
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Server response:", data);
+
+                            const img = document.createElement("img");
+                            img.src = data.filePath;
+                            img.alt = "Uploaded Image";
+                            img.style.maxWidth = "200px";
+                            img.style.margin = "10px";
+                            document.getElementById("imageContainer").appendChild(img);
+
+                            setTimeout(() => {
+                                currentFileIndex++;
+                                uploadFile();
+                            }, 1000);
+                        })
+                        .catch(error => {
+                            console.error("Error during upload:", error);
+                            document.getElementById("status").innerText = "Error during upload.";
+                        });
+                }
+                uploadFile();
+            } else {
+                alert("Please select at least one file to upload.");
+            }
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload with Progress</title>
+</head>
+
+<body>
+    <label for="fileInput">Select file:</label>
+    <input type="file" id="fileInput" accept=".txt,image/*"><br>
+    <button id="uploadButton">Upload</button>
+
+    <div id="progressContainer" style="width: 100%; background-color: #f3f3f3; margin-top: 20px;">
+        <div id="progressBar" style="width: 0%; height: 30px; background-color: green;"></div>
+    </div>
+
+    <div id="status" style="margin-top: 10px;">Status: Not started</div>
+    <div id="fileContent" style="margin-top: 20px;"></div>
+    <img id="uploadedImage" src="" alt="Uploaded Image" style="max-width: 100%; display:none;">
+
+    <script>
+        document.getElementById("uploadButton").onclick = function () {
+            const fd = new FormData();
+            const fileInput = document.getElementById("fileInput");
+
+            if (fileInput.files.length > 0) {
+                fd.append("file", fileInput.files[0]);
+
+                fetch("/api", {
+                    method: "POST",
+                    body: fd
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("File upload response:", data);
+
+                        document.getElementById("status").innerText = "Upload completed!";
+
+                        const intervalId = setInterval(() => {
+                            fetch("/progress")
+                                .then(response => response.json())
+                                .then(progressData => {
+                                    const progress = progressData.progress;
+                                    console.log("Progress:", progress);
+
+                                    document.getElementById("progressBar").style.width = progress + "%";
+
+                                    if (progress >= 100) {
+                                        clearInterval(intervalId);
+                                        document.getElementById("status").innerText = "Upload complete!";
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                });
+                        }, 200);
+
+                        if (data.filePath) {
+                            document.getElementById("uploadedImage").src = data.filePath;
+                            document.getElementById("uploadedImage").style.display = "block";
+                            document.getElementById("fileContent").innerHTML = "";
+                        } else if (data.fileContent) {
+                            document.getElementById("fileContent").innerText = data.fileContent;
+                            document.getElementById("uploadedImage").style.display = "none";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error during upload:", error);
+                        document.getElementById("status").innerText = "Error during upload.";
+                    });
+            } else {
+                alert("Please select a file to upload.");
+            }
+        };
+    </script>
+</body>
+
+</html>

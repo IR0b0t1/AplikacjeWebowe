@@ -1,19 +1,21 @@
 const express = require("express");
-const formidable = require('formidable');
+const formidable = require("formidable");
 const path = require("path");
 const app = express();
 const PORT = 3000;
-app.use(express.static('static'));
-app.use(express.json());
+
+app.use(express.static("static"));
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "/static/fetch2.html"));
+    res.sendFile(path.join(__dirname, "/static/fetch6.html"));
 });
 
 app.post("/api", function (req, res) {
     const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, '/static/upload');
+    form.uploadDir = path.join(__dirname, "/static/upload");
     form.keepExtensions = true;
+
+    let filePaths = [];
 
     form.parse(req, (err, fields, files) => {
         if (err) {
@@ -22,14 +24,14 @@ app.post("/api", function (req, res) {
         }
 
         const file = files.file;
-        const filePath = `/upload/${path.basename(file.path)}`;
+        filePaths.push(`/upload/${path.basename(file.path)}`);
 
-        const responseData = {
-            message: "File uploaded!",
-            filePath: filePath,
-        };
-
-        res.json(responseData);
+        setTimeout(() => {
+            res.json({
+                message: "File uploaded successfully!",
+                filePath: filePaths[0],
+            });
+        }, 1000);
     });
 });
 
