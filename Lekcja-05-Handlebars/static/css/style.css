@@ -1,11 +1,28 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 h1 {
-    font-size: 150px;
+    text-decoration: underline;
+}
+h2{
+    text-decoration: underline;
+    color: lightgray;
+}
+div{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: rgb(238, 238, 238);
 }
 
-h3 {
-    font-size: 100px;
-}
-
-p {
-    color: brown;
+p{
+    background-color: lightgray;
+    width: 100%;
+    margin: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    color: navy;
+    font-size: 30px;
 }

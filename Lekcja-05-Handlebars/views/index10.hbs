@@ -1,0 +1,10 @@
+<div>
+    <form action="/update-title" method="POST">
+        <input type="text" name="title" placeholder="Nowy tytuł" required>
+        <button type="submit">Zmień tytuł</button>
+    </form>
+    <p>{{title}}</p>
+    <p>{{shortTitle title}}</p>
+    <p>{{bigLetters title}}</p>
+    <p>{{dashBetweenLetters title}}</p>
+</div>

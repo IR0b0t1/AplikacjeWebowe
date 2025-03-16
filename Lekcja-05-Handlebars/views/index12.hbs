@@ -1,0 +1,16 @@
+<header>{{> header}}</header>
+<div>
+    <table>
+        <tr>
+            <th>miasto</th>
+            <th>pogoda</th>
+            <th>temperatura</th>
+            <th>smog</th>
+            <th>szczegóły</th>
+        </tr>
+        {{#each locations}}
+            {{> weatheritem}}
+        {{/each}}
+    </table>
+</div>
+<footer>{{> footer}}</footer>

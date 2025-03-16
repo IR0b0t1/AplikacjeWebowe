@@ -1,0 +1,29 @@
+<h1>Ćwiczenie 07 - render tablic, obiektów, tablic obiektów</h1>
+<h2>Wyświetlanie całej tablicy jedno i dwu-wymiarowej</h2>
+<div>
+    <p>{{langs}}</p>
+    <p>{{digits}}</p>
+</div>
+<h2>Pobranie elementu z tablicy 1 lub 2-wymiarowej</h2>
+<div>
+    <p>{{countries.[0]}}</p>
+    <p>{{digits.[0].[1]}}</p>
+</div>
+<h2>Iteracja przez tablicę</h2>
+<div>
+{{#each countries}}
+<p>{{@index}} - {{this}}</p>
+{{/each}}
+</div>
+<h2>Iteracja przez obiekt</h2>
+<div>
+{{#each user}}
+<p>{{@index}} - {{@key}} - {{this}}</p>
+{{/each}}
+</div>
+<h2>Iteracja przez tablicę obiektów</h2>
+<div>
+{{#each books}}
+<p>{{@index}} - {{title}}</p>
+{{/each}}
+</div>

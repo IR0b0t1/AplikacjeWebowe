@@ -10,25 +10,12 @@ app.set('view engine', 'hbs');
 app.use(express.urlencoded({
     extended: true
 }));
-
-const context = {
-    subject: "ćwiczenie 5 - dane z tablicy, radio",
-    fields: [
-        { name: "title" },
-        { name: "author" },
-        { name: "lang" }
-    ],
-    books: [
-        { title: "Lalka", author: "B Prus", lang: "PL" },
-        { title: "Hamlet", author: "W Szekspir", lang: "ENG" },
-        { title: "Pan Wołodyjowski", author: "H Sienkiewicz", lang: "PL" },
-        { title: "Zamek", author: "F Kafka", lang: "CZ" }
-    ]
-}
+const context = require("./data/data08.json")
+console.log(context)
 
 // GET-y
 app.get("/", function (req, res) {
-    res.render('index6.hbs', context);
+    res.render('index8.hbs', context);
 })
 
 // Static
