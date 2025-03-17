@@ -1,0 +1,62 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: red;
+}
+
+.forms {
+    display: flex;
+}
+
+th {
+    background-color: gray;
+    color: snow;
+    border: 1px solid black;
+    width: 200px;
+}
+
+.td {
+    background-color: lightgray;
+    color: black;
+    border: 1px solid black;
+    width: 200px;
+}
+
+button {
+    background-color: lightgray;
+    border: 1px solid cyan;
+    color: blue;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    background: lightgray;
+    margin: 10px;
+    padding: 10px;
+    width: 150px;
+    height: 150px;
+}
+
+.funny {
+    border: 1px solid black;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 20px;
+
+}
+
+form {
+    display: flex;
+}
+
+.dataBox {
+    display: flex;
+}

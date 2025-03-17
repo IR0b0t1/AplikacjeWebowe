@@ -1,0 +1,35 @@
+<h1>CARS</h1>
+<div class="forms">
+    <select name="car_name">
+        {{#each carsData}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <form action="/handleForm" method="/GET">
+        {{#each letters}}
+        <div class="funny">
+            <label>{{this}}</label>
+            <input type="radio" value="{{this}}" name="carsL">
+        </div>
+        {{/each}}
+        <button type="submit">Filtruj</button>
+    </form>
+</div>
+<table>
+    <tr>
+        <th>Marka</th>
+        <th>Model</th>
+        <th>Kolor</th>
+        <th>Rocznik</th>
+        <th>Uszkodzenie</th>
+    </tr>
+    {{#each cars}}
+    <tr>
+        <td class="td">{{car_name}}</td>
+        <td class="td">{{car_type}}</td>
+        <td style="background: {{Color hex_color}};"></td>
+        <td class="td">{{Year car_year}}</td>
+        <td class="td">{{Damaged damaged}}</td>
+    </tr>
+    {{/each}}
+</table>
