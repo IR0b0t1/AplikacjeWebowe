@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
 </head>
+
 <body>
     <form action="/handleForm" method="GET" style="border: 1px solid gray; background: green;">
         <label>Wybierz input: </label>
         <input type="hidden" name="hiddenInput" value="Ni ma mnie">
         <input type="color" name="color">
         <input type="radio" name="radio" value="on">
+        <input type="radio" name="radio" value="off">
         <input type="checkbox" name="checkbox" value="ca">
         <input type="checkbox" name="checkbox" value="cb">
         <button type="submit">Submit</button>
     </form>
 </body>
+
 </html>

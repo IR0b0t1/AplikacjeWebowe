@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+
+<body>
+    <label for="imagetoupload">Obraz</label>
+    <input type="file" id="fileInput" required accept="image/*" name="imagetoupload"><br>
+    <div id="div1">klik</div>
+    <div id="response"></div>
+    <script>
+        document.getElementById("div1").onclick = function () {
+            const fd = new FormData();
+            const fileInput = document.getElementById("fileInput");
+
+            if (fileInput.files.length > 0) {
+                fd.append("file", fileInput.files[0]);
+
+                fetch("/api", { method: "post", body: fd })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        document.getElementById("response").innerText = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => console.log(error));
+            } else {
+                alert("Please select a file to upload.");
+            }
+        }
+    </script>
+</body>
+
+</html>

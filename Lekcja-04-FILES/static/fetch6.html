@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files with Progress</title>
+    <style>
+        .progress-container {
+            margin: 10px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar div {
+            height: 100%;
+            background: #4caf50;
+            width: 0%;
+            transition: width 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="fileInput">Select files:</label>
+    <input type="file" id="fileInput" accept="image/*,text/plain" multiple><br>
+    <button id="uploadButton">Upload</button>
+
+    <div id="status" style="margin-top: 10px;">Status: Not started</div>
+    <div id="progressContainer"></div>
+    <div id="imageContainer" style="margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById("uploadButton").onclick = async function () {
+            const fileInput = document.getElementById("fileInput");
+            const files = fileInput.files;
+            const statusDiv = document.getElementById("status");
+            const progressContainer = document.getElementById("progressContainer");
+            progressContainer.innerHTML = "";
+
+            if (files.length === 0) {
+                alert("Please select at least one file to upload.");
+                return;
+            }
+
+            statusDiv.innerText = "Uploading files...";
+
+            for (let i = 0; i < files.length; i++) {
+                await uploadFile(files[i], i);
+            }
+
+            statusDiv.innerText = "All files uploaded!";
+        };
+
+        async function uploadFile(file, index) {
+            const progressBarContainer = document.createElement("div");
+            progressBarContainer.className = "progress-container";
+            progressBarContainer.innerHTML = `<div class="progress-bar"><div id="progress${index}" style="width:0%"></div></div>`;
+            document.getElementById("progressContainer").appendChild(progressBarContainer);
+
+            let fd = new FormData();
+            fd.append("file", file);
+
+            const response = await fetch("/api", {
+                method: "POST",
+                body: fd
+            });
+
+            const reader = response.body.getReader();
+            const contentLength = +response.headers.get("Content-Length");
+            let receivedLength = 0;
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                receivedLength += value.length;
+                const progress = Math.round((receivedLength / contentLength) * 100);
+                document.getElementById(`progress${index}`).style.width = `${progress}%`;
+            }
+
+            const data = await response.json();
+
+            if (data.filePath.endsWith(".txt")) {
+                const textDiv = document.createElement("div");
+                textDiv.innerText = `Uploaded Text File: ${data.filePath}`;
+                document.getElementById("imageContainer").appendChild(textDiv);
+            } else {
+                const img = document.createElement("img");
+                img.src = data.filePath;
+                img.alt = "Uploaded Image";
+                img.style.maxWidth = "200px";
+                img.style.margin = "10px";
+                document.getElementById("imageContainer").appendChild(img);
+            }
+        }
+    </script>
+</body>
+
+</html>

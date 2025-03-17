@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+
+<body>
+    <label for="fileInput">Obraz:</label>
+    <input type="file" id="fileInput" accept="image/*"><br>
+    <button id="uploadButton">Upload</button>
+    <img id="uploadedImage" src="" alt="Uploaded Image" style="max-width: 100%;"><br>
+
+    <script>
+        document.getElementById("uploadButton").onclick = function () {
+            const fd = new FormData();
+            const fileInput = document.getElementById("fileInput");
+
+            if (fileInput.files.length > 0) {
+                fd.append("file", fileInput.files[0]);
+
+                fetch("http://localhost:3000/api", {
+                    method: "POST",
+                    body: fd
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+
+                        if (data.filePath) {
+                            document.getElementById("uploadedImage").src = data.filePath;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            } else {
+                alert("Please select a file to upload.");
+            }
+        };
+    </script>
+</body>
+
+</html>

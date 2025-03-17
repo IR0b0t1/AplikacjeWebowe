@@ -31,36 +31,6 @@ app.get("/", function (req, res) {
     res.render('index6.hbs', context);
 })
 
-app.get("/handleForm", function (req, res) {
-    let newContext = {}
-    newContext.title = []
-    newContext.author = []
-    newContext.lang = []
-    console.log(newContext)
-    console.log("Req: " + req.query.show)
-    console.log(req.query)
-    req.query.show.forEach(element => {
-        console.log(element)
-        if (element == "title") {
-            newContext.title = context.books.map(element => element.title)
-        }
-        if (element == "author") {
-            newContext.author = context.books.map(element => element.author)
-        }
-        if (element == "lang") {
-            newContext.lang = context.books.map(element => element.lang)
-        }
-    });
-    switch (req.query.show) {
-        case "title" || "author" || "lang":
-            res.render("handle6.hbs", { data: newContext })
-            break;
-        default:
-            res.render("handle6.hbs", { data: ["Nie wybrano żadnej opcji"] })
-            break
-    }
-})
-
 // Static
 app.use(express.static('static'))
 
